@@ -1,8 +1,11 @@
 import { NestFactory } from '@nestjs/core';
 import { KitchenModule } from './kitchen.module';
+import { RmqService } from '@app/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(KitchenModule);
-  await app.listen(3000);
+  const rmqService = app.get<RmqService>(RmqService)
+  app.connectMicroservice(rmqService.getOptions('KITCHEN'))
+  await app.startAllMicroservices()
 }
 bootstrap();
