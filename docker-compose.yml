@@ -1,0 +1,51 @@
+services:
+  restaurant:
+    build:
+      context: .
+      dockerfile: ./apps/restaurant/Dockerfile
+      target: development
+    command: pnpm run start:dev restaurant
+    env_file:
+      - ./apps/restaurant/.env
+    depends_on:
+      - mongodb-primary
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - '3000:3000'
+
+  kitchen:
+    build:
+      context: .
+      dockerfile: ./apps/kitchen/Dockerfile
+      target: development
+    command: pnpm run start:dev kitchen
+    env_file:
+      - ./apps/kitchen/.env
+    depends_on:
+      - mongodb-primary
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+
+  rabbitmq:
+    image: rabbitmq
+    ports:
+      - '5672:5672'
+
+  mongodb-primary:
+    image: docker.io/bitnami/mongodb:5.0
+    environment:
+      - MONGODB_ADVERTISED_HOSTNAME=mongodb-primary
+      - MONGODB_REPLICA_SET_MODE=primary
+      - MONGODB_ROOT_PASSWORD=password123
+      - MONGODB_REPLICA_SET_KEY=replicasetkey123
+    volumes:
+      - 'mongodb_master_data:/bitnami/mongodb'
+    ports:
+      - '27017:27017'
+
+volumes:
+  mongodb_master_data:
+    driver: local
