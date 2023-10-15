@@ -13,10 +13,6 @@ import { KITCHEN_SERVICE } from './constants/services';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      validationSchema: Joi.object({
-        MONGODB_URI: Joi.string().required(),
-        PORT: Joi.number().required(),
-      }),
       envFilePath: './apps/restaurant/.env',
     }),
     DatabaseModule,

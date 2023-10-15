@@ -3,7 +3,7 @@ import { KitchenController } from './kitchen.controller';
 import { KitchenService } from './kitchen.service';
 import { DatabaseModule, RmqModule } from '@app/common';
 import { ConfigModule } from '@nestjs/config';
-import Joi from 'joi';
+import * as Joi from 'joi';
 import { OrdersRepository } from '@app/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Order, OrderSchema } from '@app/common/schemas/order.schema';
